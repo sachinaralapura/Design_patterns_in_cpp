@@ -7,124 +7,125 @@
 // to another room. The classes Room, Door, and Wall define the components of
 // the maze
 
-#include <list>
-#include <string>
+#include <iostream>
+// #include <list>
+// #include <string>
 enum Direction { North, South, East, West };
 using namespace std;
-class Player {
-private:
-  std::string name;
+// class Player {
+// private:
+//   std::string name;
 
-public:
-  Player(std::string name) { this->name = name; }
-};
+// public:
+//   Player(std::string name) { this->name = name; }
+// };
 
-// ---------------- MapSite -----------------------
-class MapSite {
-public:
-  virtual void Enter() = 0;
-};
+// // ---------------- MapSite -----------------------
+// class MapSite {
+// public:
+//   virtual void Enter() = 0;
+// };
 
-// ---------------- Room ---------------------
+// // ---------------- Room ---------------------
 
-class Room : public MapSite {
-public:
-  Room();
-  Room(int roomNo);
-  MapSite *GetSide(Direction) const;
-  void SetSide(Direction, MapSite *);
-  virtual void Enter();
+// class Room : public MapSite {
+// public:
+//   Room(){};
+//   Room(int roomNo);
+//   MapSite *GetSide(Direction) const;
+//   void SetSide(Direction, MapSite *);
+//   virtual void Enter();
 
-private:
-  MapSite *_sides[4];
-  int _roomNumber;
-};
+// private:
+//   MapSite *_sides[4];
+//   int _roomNumber;
+// };
 
-void Room::SetSide(Direction direction, MapSite *component) {
-  _sides[direction] = component;
-}
+// Room::Room(int roomNo) { this->_roomNumber = roomNo; }
 
-// ---------------- Wall ---------------------
+// void Room::SetSide(Direction direction, MapSite *component) {
+//   _sides[direction] = component;
+// }
 
-class Wall : public MapSite {
-public:
-  Wall();
-  virtual void Enter();
-};
+// // ---------------- Wall ---------------------
 
-// ---------------------- Door -------------------------
+// class Wall : public MapSite {
+// public:
+//   Wall() {}
+//   virtual void Enter();
+// };
 
-class Door : public MapSite {
-public:
-  Door();
-  Door(Room *, Room *);
-  virtual void Enter();
-  void OutSideRoom(Room *);
-  void InSideRoom(Room *);
-  Room *GetOutRoom() const;
-  Room *GetInRoom() const;
+// // ---------------------- Door -------------------------
 
-private:
-  Room *inRoom;
-  Room *outRoom;
-  bool _isOpen;
-};
+// class Door : public MapSite {
+// public:
+//   Door() {}
+//   Door(Room *, Room *);
+//   virtual void Enter();
+//   void OutSideRoom(Room *);
+//   void InSideRoom(Room *);
+//   Room *GetOutRoom() const;
+//   Room *GetInRoom() const;
 
-Door::Door(Room *r1, Room *r2) {
-  this->inRoom = r1;
-  this->outRoom = r2;
-  this->_isOpen = false;
-}
+// private:
+//   Room *inRoom;
+//   Room *outRoom;
+//   bool _isOpen;
+// };
 
-void Door::OutSideRoom(Room *outRoom) { this->outRoom = outRoom; }
-void Door::InSideRoom(Room *inRoom) { this->inRoom = inRoom; }
-Room *Door::GetInRoom() const { return this->inRoom; }
-Room *Door::GetOutRoom() const { return this->outRoom; }
-// ------------------------- Maze --------------------------
+// Door::Door(Room *r1, Room *r2) {
+//   this->inRoom = r1;
+//   this->outRoom = r2;
+//   this->_isOpen = false;
+// }
 
-class Maze {
-public:
-  Maze();
-  void addRoom(Room *);
-  Room *RoomNo(int) const;
+// void Door::OutSideRoom(Room *outRoom) { this->outRoom = outRoom; }
+// void Door::InSideRoom(Room *inRoom) { this->inRoom = inRoom; }
+// Room *Door::GetInRoom() const { return this->inRoom; }
+// Room *Door::GetOutRoom() const { return this->outRoom; }
+// // ------------------------- Maze --------------------------
 
-private:
-  list<Room *> _roomList;
-};
+// class Maze {
+// public:
+//   Maze() {}
+//   void addRoom(Room *);
+//   Room *RoomNo(int) const;
 
-void Maze::addRoom(Room *room) { _roomList.push_back(room); }
+// private:
+//   list<Room *> _roomList;
+// };
 
-// -------------------------- MazeGame -------------------------
+// void Maze::addRoom(Room *room) { _roomList.push_back(room); }
 
-class MazeGame {
-public:
-  MazeGame();
-  Maze *CreateMaze();
-};
+// // -------------------------- MazeGame -------------------------
 
-Maze *MazeGame::CreateMaze() {
-  Maze *aMaze = new Maze;
-  Room *r1 = new Room(1);
-  Room *r2 = new Room(2);
-  Door *theDoor = new Door();
-  theDoor->OutSideRoom(r1);
-  theDoor->InSideRoom(r2);
+// class MazeGame {
+// public:
+//   MazeGame() {}
+//   Maze *CreateMaze();
+// };
 
-  aMaze->addRoom(r1);
-  aMaze->addRoom(r2);
+// Maze *MazeGame::CreateMaze() {
+//   Maze *aMaze = new Maze;
+//   Room *r1 = new Room(1);
+//   Room *r2 = new Room(2);
+//   Door *theDoor = new Door();
+//   theDoor->OutSideRoom(r1);
+//   theDoor->InSideRoom(r2);
 
-  r1->SetSide(Direction::North, new Wall());
-  r1->SetSide(Direction::West, new Wall());
-  r1->SetSide(Direction::East, new Wall());
-  r1->SetSide(Direction::South, theDoor);
-  r2->SetSide(Direction::North, theDoor);
-  r2->SetSide(Direction::South, new Wall());
-  r2->SetSide(Direction::West, new Wall());
-  r2->SetSide(Direction::East, new Wall());
+//   aMaze->addRoom(r1);
+//   aMaze->addRoom(r2);
 
-  return aMaze;
-}
+//   r1->SetSide(Direction::North, new Wall());
+//   r1->SetSide(Direction::West, new Wall());
+//   r1->SetSide(Direction::East, new Wall());
+//   r1->SetSide(Direction::South, theDoor);
+//   r2->SetSide(Direction::North, theDoor);
+//   r2->SetSide(Direction::South, new Wall());
+//   r2->SetSide(Direction::West, new Wall());
+//   r2->SetSide(Direction::East, new Wall());
+
+//   return aMaze;
+// }
 
 // --------------------------------------------------------------------
-
-class MazeFactory {};
